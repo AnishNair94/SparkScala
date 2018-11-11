@@ -43,7 +43,8 @@ object Main {
     KPIFunctions.calcSecondMostPurchase(spark,salesDF,customersDF,2013,Month.MAY)
 
     //Find a product that has not been sold at least once (if any).
-    KPIFunctions.findNotPurchasedProducts(spark,productDF,salesDF)
+    //KPIFunctions.findNotPurchasedProducts(spark,productDF,salesDF)
+    KPIFunctions.findNotPurchasedProducts(spark)
 
     //Calculate the total number of users who purchased the same product consecutively at least 2 times on a given day.
     val count = KPIFunctions.countConsecutiveBuyers(spark,salesDF)

@@ -63,7 +63,8 @@ object KPIFunctions {
   }
 
   //Find a product that has not been sold at least once (if any).
-  def findNotPurchasedProducts(spark:SparkSession,productDF:DataFrame,salesDF:DataFrame):Unit={
+  //def findNotPurchasedProducts(spark:SparkSession,productDF:DataFrame,salesDF:DataFrame):Unit={
+  def findNotPurchasedProducts(spark:SparkSession):Unit={
     import spark.sql
     val productNotPurchased = sql("select * from products where pId NOT IN (select pId from sales)")
     ReadData.writeDF(productNotPurchased,DataPaths.BASE_OUTPUT_DIR+"ProductNotPurchased")
