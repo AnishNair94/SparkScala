@@ -9,7 +9,7 @@ case class Customer(cId:Int, fName:String, lName:String, phoneNumber:Long)
 case class Product(pId:Int, pName:String, pType:String, pVersion:String, pPrice:Double)
 case class Refund(rId:Int, tId:Int, cId:Int, pId:Int, timestamp:Timestamp, refundAmount:Double, refundQuantity:Int)
 case class Sales(tId:Int, cId:Int, pId:Int, timestamp:Timestamp, totalAmount:Double, totalQuantity:Int)
-
+case class CountryData(Cid:Int, name: String, status: String, country: String,year: Int)
 
 object Main {
 
@@ -33,22 +33,27 @@ object Main {
     val customersDF = ReadData.readCustomerDF(spark,DataPaths.CUSTOMER_PATH)
     customersDF.createOrReplaceTempView("customers")
 
+    val countryDF = ReadData.readCountryDF(spark,DataPaths.COUNTRY_DATA)
+    countryDF.createOrReplaceTempView("countryTable")
+
     /* Display the distribution of sales by product name and product type.*/
-    KPIFunctions.getDistribution(spark)
+   // KPIFunctions.getDistribution(spark)
 
     //Calculate the total amount of all transactions that happened in year 2013 and have not been refunded as of today.
-    KPIFunctions.calcSalesAmountInYear(spark,salesDF,2013)
+    //KPIFunctions.calcSalesAmountInYear(spark,salesDF,2013)
 
     //Display the customer name who made the second most purchases in the month of May 2013. Refunds should be excluded.
-    KPIFunctions.calcSecondMostPurchase(spark,salesDF,customersDF,2013,Month.MAY)
+    //KPIFunctions.calcSecondMostPurchase(spark,salesDF,customersDF,2013,Month.MAY)
 
     //Find a product that has not been sold at least once (if any).
     //KPIFunctions.findNotPurchasedProducts(spark,productDF,salesDF)
-    KPIFunctions.findNotPurchasedProducts(spark)
+    //KPIFunctions.findNotPurchasedProducts(spark)
 
     //Calculate the total number of users who purchased the same product consecutively at least 2 times on a given day.
-    val count = KPIFunctions.countConsecutiveBuyers(spark,salesDF)
-    println("Total number of users who purchased the same product consecutively at least 2 times on a given day: "+count)
+    //val count = KPIFunctions.countConsecutiveBuyers(spark,salesDF)
+    //println("Total number of users who purchased the same product consecutively at least 2 times on a given day: "+count)
+
+    KPIFunctions.getTop5CountryPerYear(spark)
 
   }
 

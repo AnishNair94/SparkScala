@@ -37,6 +37,16 @@ object ReadData {
       .toDF()
   }
 
+  def readCountryDF(spark:SparkSession,path:String):DataFrame={
+    import  spark.implicits._
+
+    spark.read.textFile(path)
+      .map(line => line.split(DataPaths.COMMADELIMITER))
+      .filter(line => line(2) == "Approved")
+      .map(line=> new CountryData(line(0).toInt, line(1),line(2),line(3),line(4).toInt))
+      .toDF()
+  }
+
 
   def writeDF(df:DataFrame,path:String):Unit={
     df.coalesce(1)

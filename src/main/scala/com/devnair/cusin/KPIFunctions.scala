@@ -94,4 +94,10 @@ object KPIFunctions {
     sameDayCount
   }
 
+  def getTop5CountryPerYear(spark: SparkSession)={
+    val sqlQuery = "select * from (select country,year,row_number() over ( partition by country,year order by cnt desc) top_count from (select count(status) as cnt,country,year from countryTable group by country, year)) where top_count<=5"
+    val result = spark.sql(sqlQuery)
+    ReadData.writeDF(result,DataPaths.BASE_OUTPUT_DIR+"Top5Country")
+  }
+
 }
